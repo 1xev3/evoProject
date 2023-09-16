@@ -39,7 +39,7 @@ async def delete_device(userID: int) -> User :
         return JSONResponse(status_code=200, content={"message": "Deleted!"})
     return JSONResponse(status_code=404, content={"message": "Not found!"})
 
-@app.put("/devices/{userID}", summary='Обновляет информацию об устройстве')
+@app.put("/users/{userID}", summary='Обновляет информацию об пользователе')
 async def update_device(userID: int, device: UserBase) -> User :
     if userID in users:
         result = User(

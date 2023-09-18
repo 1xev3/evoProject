@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 **/__pycache__/*
+=======
+>>>>>>> cb54bea6d75d3caef8c3362166e874dd85236c21
 **/venv/*
 __pycache__
 .vscode

@@ -3,4 +3,5 @@
 Проект для EvoAcademy "Техподдержка"
 
 ## Диаграмма проекта
-![image](https://github.com/1xev3/evoProject/assets/53704889/927a7f02-393d-44df-b99f-350d847a0c30)
+![image](https://github.com/1xev3/evoProject/assets/53704889/717a231e-ff15-417c-9216-04d5aafd6849)
+

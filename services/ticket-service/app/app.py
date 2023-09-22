@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse
 from .schemas.ticket import TicketBase, Ticket
 
 app = FastAPI(
-    version='0.0.1',
+    version='0.0.2',
     title='Ticket service'
 )
 

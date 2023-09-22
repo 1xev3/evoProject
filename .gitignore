@@ -2,5 +2,6 @@
 **/venv/*
 __pycache__
 .vscode
-/venv
-/requirements.txt
+**/deploy/postgresql/data/*
+**/deploy/.env
+!**/deploy/postgresql/data/.gitkeep

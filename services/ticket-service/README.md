@@ -3,13 +3,14 @@
 ## Setting up
 - Set up your PosgreSQL in deploy folder
 - Create .env file in folder `./app` with your data:
-```
-DATABASE_URL = "postgresql://LOGIN:PASSWORD@IP:PORT/DBNAME"
-```
+    - DATABASE_URL = "postgresql://LOGIN:PASSWORD@IP:PORT/DBNAME"
+- Configure your venv: 
+    - Add new venv: `python3 -m venv venv`
+    - Activate: `source venv/bin/activate`
+    - Install dependencies: `pip install -r requirements.txt`
 
 ## Running
-- In console: `uvicorn app.app:app --port 5000 --reload`
-- Script: `run.sh`
+- `source run.sh`
 
 ## Api
 | Method | Route | Description |

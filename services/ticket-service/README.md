@@ -1,5 +1,12 @@
 # Ticket service
 
+## Setting up
+- Set up your PosgreSQL in deploy folder
+- Create .env file in folder `./app` with your data:
+```
+DATABASE_URL = "postgresql://LOGIN:PASSWORD@IP:PORT/DBNAME"
+```
+
 ## Running
 `uvicorn app.app:app --port 5000 --reload`
 

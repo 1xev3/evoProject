@@ -1,11 +1,13 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, JSON, Date, Enum, ARRAY
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, JSON, Date, Enum
 from typing import Literal
 from sqlalchemy.orm import relationship
+
+import enum
 
 from .db import Base
 
 #Список возможных статусов заявки
-class TicketStatuses(Enum):
+class TicketStatuses(enum.Enum):
     awaiting_user = 1
     awaiting_moderator = 2
     closed = 3
@@ -21,6 +23,9 @@ class Ticket(Base):
 
 class TicketMessage(Base):
     __tablename__ = "ticket_message"
+
+    id = Column(Integer, primary_key=True, index=True)
+
     text = Column(String)
     date = Column(Date)
 

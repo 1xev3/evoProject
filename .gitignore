@@ -3,5 +3,5 @@
 __pycache__
 .vscode
 **/deploy/postgresql/data/*
-**/deploy/.env
+**/.env
 !**/deploy/postgresql/data/.gitkeep

@@ -2,7 +2,14 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-SQLALCHEMY_DATABASE_URL = "postgresql://home-automation:home-automation@192.168.1.50/home-automation"
+from dotenv import load_dotenv
+from os import path, getenv, getcwd
+
+if not load_dotenv(dotenv_path = 'app/.env'):
+    print("\n[db.py] DOTENV NOT LOADED!\n"*3)
+    exit(404)
+
+SQLALCHEMY_DATABASE_URL = getenv("DATABASE_URL")
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

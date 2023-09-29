@@ -1,52 +1,84 @@
 import typing
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.responses import JSONResponse
 
-from .schemas.ticket import TicketBase, Ticket
+from sqlalchemy.orm import Session
 
+from .database import SessionLocal, engine, Base
+from .schemas import Ticket, TicketCreate, TicketUpdate
+
+from . import functional
+
+##===============##
+## Инициализация ##
+##===============##
+
+# Создать все начальные данные
+Base.metadata.create_all(bind=engine)
+
+#Получить доступ к базе данных
+def get_db() -> Session:
+    db = SessionLocal()
+    try: yield db
+    finally: db.close()
+
+#Создание приложения FastAPI
 app = FastAPI(
-    version='0.0.2',
+    version='0.0.3',
     title='Ticket service'
 )
 
-#Список со всеми пользователями. TODO - Заменить на PostgreSQL
-tickets: typing.Dict[int, Ticket] = {}
 
-@app.get("/tickets", summary='Возвращает список всех тикетов', response_model=list[Ticket])
-async def get_tickets_list() -> typing.Iterable[Ticket] :
-    return [ v for k,v in tickets.items() ]
+##========##
+## Методы ##
+##========##
 
-@app.post("/tickets", status_code=201, response_model=Ticket,summary='Добавляет тикет в базу')
-async def add_ticket(ticket: TicketBase) -> Ticket :
-    result = Ticket(
-        **ticket.model_dump(),
-        id=len(tickets) + 1,
-        status='awaiting user', #значение по умолчанию
-    )
-    tickets[result.id] = result
-    return result
+#Список всех тикетов
+@app.get("/tickets", 
+         summary='Возвращает список всех тикетов', 
+         response_model=typing.List[Ticket]
+)
+async def get_tickets_list(db: Session = Depends(get_db), skip: int = 0, limit: int = 100) -> typing.Iterable[Ticket] :
+    return functional.get_tickets(db, skip, limit)
 
-@app.get("/tickets/{ticketID}", summary='Возвращает информацию о тикете')
-async def get_ticket_info(ticketID: int) -> Ticket :
-    if ticketID in tickets: return tickets[ticketID]
-    return JSONResponse(status_code=404, content={"message": "Not found!"})
 
-@app.delete("/tickets/{ticketID}", summary='Удаляет тикет из базы')
-async def delete_ticket(ticketID: int) -> Ticket :
-    if ticketID in tickets:
-        del tickets[ticketID]
-        return JSONResponse(status_code=200, content={"message": "Deleted!"})
-    return JSONResponse(status_code=404, content={"message": "Not found!"})
+#Создание нового тикета
+@app.post("/tickets", 
+          response_model=Ticket,
+          summary='Создаёт новый тикет'
+)
+async def new_ticket(ticket: TicketCreate, db: Session = Depends(get_db)) -> Ticket :
+    return functional.create_ticket(db, ticket)
 
-@app.put("/devices/{ticketID}", summary='Обновляет тикет')
-async def update_ticket(ticketID: int, ticketbase: TicketBase) -> Ticket :
-    if ticketID in tickets:
-        result = Ticket(
-            **ticketbase.model_dump(),
-            id=ticketID,
-            status='awaiting user',#значение по умолчанию
-        )
-        tickets[ticketID] = result
-        return tickets[ticketID]
+
+#Получить тикет по ID
+@app.get("/tickets/{ticketID}", 
+         summary='Получить тикет по его ID'
+)
+async def get_ticket_info(ticketID: int, db: Session = Depends(get_db)) -> Ticket :
+    ticket = functional.get_ticket_by_id(db, ticketID)
+    if ticket != None:
+        return ticket
+    return JSONResponse(status_code=404, content={"message": "Not found"})
+
+
+#Удаление тикета
+@app.delete("/tickets/{ticketID}", 
+            summary='Удаляет тикет из базы по его ID'
+)
+async def delete_ticket(ticketID: int, db: Session = Depends(get_db)) -> Ticket :
+    if functional.remove_ticket_by_id(db, ticketID):
+        return JSONResponse(status_code=200, content={"message": "Item successfully deleted"})
+    return JSONResponse(status_code=404, content={"message": "Not found"})
+
+
+#Обновление информации о тикете
+@app.put("/tickets/{ticketID}", 
+         summary='Обновляет тикет по его ID'
+)
+async def update_ticket(ticketID: int, ticketbase: TicketUpdate, db: Session = Depends(get_db)) -> Ticket :
+    ticket = functional.update_ticket_by_id(db, ticketID, ticketbase)
+    if ticket != None:
+        return JSONResponse(status_code=200, content={"message": "Item successfully changed"})
     return JSONResponse(status_code=404, content={"message": "Item not found"})

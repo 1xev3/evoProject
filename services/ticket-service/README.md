@@ -8,7 +8,8 @@ DATABASE_URL = "postgresql://LOGIN:PASSWORD@IP:PORT/DBNAME"
 ```
 
 ## Running
-`uvicorn app.app:app --port 5000 --reload`
+- In console: `uvicorn app.app:app --port 5000 --reload`
+- Script: `run.sh`
 
 ## Api
 | Method | Route | Description |

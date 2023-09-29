@@ -14,8 +14,9 @@ class TicketStatuses(enum.Enum):
 
 class Ticket(Base):
     __tablename__ = "ticket"
-
     id = Column(Integer, primary_key=True, index=True)
+
+    creator_id = Column(Integer)
     caption = Column(String)
     status = Column(Enum(TicketStatuses), default=TicketStatuses.awaiting_moderator)
 
@@ -25,6 +26,7 @@ class TicketMessage(Base):
     __tablename__ = "ticket_message"
 
     id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer)
 
     text = Column(String)
     date = Column(Date)

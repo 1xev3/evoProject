@@ -3,10 +3,12 @@ import typing
 from fastapi import FastAPI, Depends
 from fastapi.responses import JSONResponse
 
+from sqlalchemy.sql import text
 from sqlalchemy.orm import Session
 
 from .database import SessionLocal, engine, Base
 from .schemas import Ticket, TicketCreate, TicketUpdate
+from .schemas import TicketMessage, TicketMessageCreate, TicketMessageBase
 
 from . import functional
 
@@ -30,9 +32,9 @@ app = FastAPI(
 )
 
 
-##========##
-## Методы ##
-##========##
+##================##
+## Методы тикетов ##
+##================##
 
 #Список всех тикетов
 @app.get("/tickets", 
@@ -60,7 +62,7 @@ async def get_ticket_info(ticketID: int, db: Session = Depends(get_db)) -> Ticke
     ticket = functional.get_ticket_by_id(db, ticketID)
     if ticket != None:
         return ticket
-    return JSONResponse(status_code=404, content={"message": "Not found"})
+    return JSONResponse(status_code=404, content={"message": "Ticket not found"})
 
 
 #Удаление тикета
@@ -69,8 +71,8 @@ async def get_ticket_info(ticketID: int, db: Session = Depends(get_db)) -> Ticke
 )
 async def delete_ticket(ticketID: int, db: Session = Depends(get_db)) -> Ticket :
     if functional.remove_ticket_by_id(db, ticketID):
-        return JSONResponse(status_code=200, content={"message": "Item successfully deleted"})
-    return JSONResponse(status_code=404, content={"message": "Not found"})
+        return JSONResponse(status_code=200, content={"message": "Ticket successfully deleted"})
+    return JSONResponse(status_code=404, content={"message": "Ticket not found"})
 
 
 #Обновление информации о тикете
@@ -80,5 +82,65 @@ async def delete_ticket(ticketID: int, db: Session = Depends(get_db)) -> Ticket 
 async def update_ticket(ticketID: int, ticketbase: TicketUpdate, db: Session = Depends(get_db)) -> Ticket :
     ticket = functional.update_ticket_by_id(db, ticketID, ticketbase)
     if ticket != None:
-        return JSONResponse(status_code=200, content={"message": "Item successfully changed"})
-    return JSONResponse(status_code=404, content={"message": "Item not found"})
+        return JSONResponse(status_code=200, content={"message": "Ticket successfully changed"})
+    return JSONResponse(status_code=404, content={"message": "Ticket not found"})
+
+
+#Получение сообщений в тикете
+@app.get("/tickets/{ticketID}/messages", 
+         summary='Получить все сообщения'
+)
+async def get_ticket_messages(ticketID: int, db: Session = Depends(get_db)) -> typing.Iterable[TicketMessage] :
+    ticket = functional.get_ticket_by_id(db, ticketID)
+    if ticket:
+        return functional.ticket_get_messages(db, ticket)
+    return JSONResponse(status_code=404, content={"message": "Ticket not found"})
+
+#Отправка сообщения
+@app.post("/tickets/{ticketID}/message", 
+         summary='Отправить сообщение'
+)
+async def send_ticket_message(ticketID: int, ticket_message: TicketMessageCreate, db: Session = Depends(get_db)) -> TicketMessage:
+    ticket = functional.get_ticket_by_id(db, ticketID)
+    if ticket != None:
+        msg = functional.ticket_send_message(db, ticket, ticket_message)
+        if msg != None:
+            return msg
+        return JSONResponse(status_code=500, content={"message": "Message not created"})
+    return JSONResponse(status_code=404, content={"message": "Ticket not found"})
+
+
+
+##==================##
+## Методы сообщений ##
+##==================##
+
+#Получение сообщения по ID
+@app.get("/message/{messageID}", 
+         summary='Получить сообщение по id',
+         response_model=TicketMessage,
+)
+async def get_message_by_id(messageID: int, db: Session = Depends(get_db)) -> TicketMessage :
+    message = functional.get_message_by_id(db, messageID)
+    if message != None:
+        return message
+    return JSONResponse(status_code=404, content={"message": "Message not found"})
+
+#Обновление информации о сообщении
+@app.put("/message/{messageID}", 
+         summary='Обновляет сообщение по его ID'
+)
+async def update_message(messageID: int, messagebase: TicketMessageBase, db: Session = Depends(get_db))  :
+    status = functional.update_message_by_id(db, messageID, messagebase)
+    if status != None:
+        return JSONResponse(status_code=200, content={"message": "Message successfully changed"})
+    return JSONResponse(status_code=404, content={"message": "Message not found"})
+
+#Удаление сообщения
+@app.delete("/message/{messageID}", 
+            summary='Удаляет тикет из базы по его ID'
+)
+async def delete_message(messageID: int, db: Session = Depends(get_db)) :
+    if functional.remove_message_by_id(db, messageID):
+        return JSONResponse(status_code=200, content={"message": "Message successfully deleted"})
+    return JSONResponse(status_code=404, content={"message": "Message not found"})

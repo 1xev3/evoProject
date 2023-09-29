@@ -11,14 +11,13 @@ class TicketMessageBase(BaseModel):
     База для сообщения тикета
     '''
     text: str = Field(title="Текст сообщения")
-    date: datetime = Field(title="Дата отправки сообщения")
 
 # пустой класс, так как в текущей реализации при создании тикета ничего не нужно
 class TicketMessageCreate(TicketMessageBase):
     '''
     Модель для создания сообщения
     '''
-    pass
+    user_id: int = Field(title="ID автора сообщения")
 
 
 class TicketMessage(TicketMessageBase):
@@ -26,15 +25,25 @@ class TicketMessage(TicketMessageBase):
     Модель представляющая собой сообщение в тикете
     '''
     id: int = Field(title="ID сообщения")
+    date: datetime = Field(title="Дата отправки сообщения")
+    user_id: int = Field(title="ID автора сообщения")
 
     class Config:
         from_attributes = True
+
+class TicketMessageUpdate(TicketMessageBase):
+    '''
+    Модель для обновления тикета
+    '''
+    pass
+
 
 
 class TicketBase(BaseModel):
     '''
     База для тикета
     '''
+    creator_id: int = Field(title="ID Создателя заявки")
     caption: str = Field(title="Заголовок заявки")
     status: TicketStatuses = Field(title="Статус заявки", 
                                    default=TicketStatuses.awaiting_moderator, 
@@ -46,8 +55,9 @@ class TicketBase(BaseModel):
 
 class TicketCreate(BaseModel):
     '''
-    Модель для создания тикета
+    Модель для создания заявки
     '''
+    creator_id : int = Field(title="ID Создателя заявки")
     caption: str = Field(title="Заголовок заявки")
     initial_message: str = Field(title="Начальное сообщение")
     #Возможно стоит принимать так-же status, но нам не нужно чтобы пользователь мог сам выбирать статус заявки.

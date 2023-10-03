@@ -1,4 +1,4 @@
-import typing
+import typing, logging
 
 from fastapi import FastAPI, Depends
 from fastapi.responses import JSONResponse
@@ -6,18 +6,32 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.sql import text
 from sqlalchemy.orm import Session
 
-from .database import SessionLocal, engine, Base
+from .database import DB_INITIALIZER
 from .schemas import Ticket, TicketCreate, TicketUpdate
 from .schemas import TicketMessage, TicketMessageCreate, TicketMessageBase
 
-from . import functional
+from . import functional, config
 
 ##===============##
 ## Инициализация ##
 ##===============##
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+    level=20,
+    format="%(levelname)-9s %(message)s"
+)
+
+logger.info("Configuration loading...")
+cfg: config.Config = config.load_config(_env_file='.env')
+logger.info(
+    'Service configuration loaded:\n' +
+    f'{cfg.model_dump_json(by_alias=True, indent=4)}'
+)
+
 
 # Создать все начальные данные
-Base.metadata.create_all(bind=engine)
+logger.info('Database initialization...')
+SessionLocal = DB_INITIALIZER.init_db(cfg.pg_dsn.unicode_string())
 
 #Получить доступ к базе данных
 def get_db() -> Session:

@@ -2,16 +2,16 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-from dotenv import load_dotenv
-from os import path, getenv, getcwd
+class Database_Initializer():
+    def __init__(self, base):
+        self.base = base
 
-if not load_dotenv(dotenv_path = 'app/.env'):
-    print("\n[db.py] DOTENV NOT LOADED!\n"*3)
-    exit(404)
+    def init_db(self, postgre_dsn):
+        engine = create_engine(postgre_dsn)
+        SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+        self.base.metadata.create_all(bind=engine)
 
-SQLALCHEMY_DATABASE_URL = getenv("DATABASE_URL")
-
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
+        return SessionLocal
+    
 Base = declarative_base()
+DB_INITIALIZER = Database_Initializer(Base)

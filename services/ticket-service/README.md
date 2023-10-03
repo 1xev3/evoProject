@@ -1,16 +1,32 @@
 # Ticket service
 
 ## Setting up
-- Set up your PosgreSQL in deploy folder
-- Create .env file in folder `./app` with your data:
-    - `DATABASE_URL = "postgresql://LOGIN:PASSWORD@IP:PORT/DBNAME"`
-- Configure your venv: 
-    - Add new venv: `python3 -m venv venv`
-    - Activate: `source venv/bin/activate`
-    - Install dependencies: `pip install -r requirements.txt`
+Set up your PosgreSQL in deploy folder
+
+Create .env file in current folder with your data:
+```ini
+PG_DSN = "postgresql://LOGIN:PASSWORD@IP:PORT/DBNAME"
+```
+or use
+```bash
+export PG_DSN="postgresql://LOGIN:PASSWORD@IP:PORT/DBNAME"
+```
+
+## Settings loading order:
+1. .env file
+2. Environment
+3. Default fields
 
 ## Running
-- `source run.sh`
+```bash
+source run.sh
+```
+or
+```bash
+uvicorn app.app:app --port 5000 --reload
+```
+
+Documentation: `http://localhost:5000/docs`
 
 ## Methods
 | Method | Route | Description |

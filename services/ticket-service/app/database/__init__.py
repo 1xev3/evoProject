@@ -1,3 +1,3 @@
-from .db import Database_Initializer, DB_INITIALIZER
+from .db import Database_Initializer, DB_INITIALIZER, Base
 
-__all__ = [Database_Initializer, DB_INITIALIZER]
+__all__ = [Database_Initializer, DB_INITIALIZER, Base]

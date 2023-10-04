@@ -32,6 +32,7 @@ logger.info(
 # Создать все начальные данные
 logger.info('Database initialization...')
 SessionLocal = DB_INITIALIZER.init_db(cfg.pg_dsn.unicode_string())
+logger.info('Database initialized...')
 
 #Получить доступ к базе данных
 def get_db() -> Session:

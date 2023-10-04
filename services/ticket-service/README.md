@@ -1,23 +1,26 @@
 # Ticket service
 
-## Setting up
-Set up your PosgreSQL in deploy folder
+# Settings
 
-Create .env file in current folder with your data:
+### Setting up (If you not using Docker)
+Set up your PosgreSQL
+
+Create `.env` file in current folder with your data:
 ```ini
 PG_DSN = "postgresql://LOGIN:PASSWORD@IP:PORT/DBNAME"
 ```
-or use
+or use in console before running
 ```bash
 export PG_DSN="postgresql://LOGIN:PASSWORD@IP:PORT/DBNAME"
 ```
 
-## Settings loading order:
+### Settings loading order:
 1. .env file
 2. Environment
 3. Default fields
 
-## Running
+# Running
+## Standalone:
 ```bash
 source run.sh
 ```
@@ -26,9 +29,23 @@ or
 uvicorn app.app:app --port 5000 --reload
 ```
 
-Documentation: `http://localhost:5000/docs`
+## If you are using docker:
 
-## Methods
+### Building from Dockerfile
+Build service by using:
+```bash
+docker build -t "ticket-service:1.0" .
+```
+
+Configure your docker-compose file in `deploy` folder and run command:
+```bash
+docker-compose up -d
+```
+
+
+
+# Methods
+Documentation: `http://localhost:5000/docs`
 | Method | Route | Description |
 | --- | --- | --- |
 | `get` | `tickets/` | Get all tickets |

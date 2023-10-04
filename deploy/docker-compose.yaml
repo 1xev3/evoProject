@@ -18,3 +18,9 @@ services:
       PGDATA: /var/lib/postgresql/data/db-files/
     ports:
       - 5432:5432
+  ticket-service:
+    image: ticket-service:1.0
+    ports:
+    - "5001:5001"
+    environment:
+      PG_DSN: ${PG_DSN}

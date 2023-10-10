@@ -6,4 +6,7 @@
 **/deploy/postgresql/data/*
 !**/deploy/postgresql/data/.gitkeep
 
+**/deploy/mongo/data/*
+!**/deploy/mongo/data/.gitkeep
+
 **/migrations/versions

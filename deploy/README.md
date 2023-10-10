@@ -9,10 +9,12 @@ docker build -t "SERVICE_NAME:VERSION"
 1. Create `.env` file in current directory.
 2. Fill it with following data:
 ```ini
-POSTGRES_USER=YOUR_USERNAME
-POSTGRES_PASSWORD=YOUR_PASSWORD
-POSTGRES_DB=YOUR_DATABASE_NAME
-PG_DSN=postgresql://YOUR_USERNAME:YOUR_PASSWORD@YOUR_LOCAL_IP:PG_PORT/YOUR_DATABASE_NAME
+POSTGRES_USER=your_data
+POSTGRES_PASSWORD=your_data
+POSTGRES_DB=your_data
+PG_DSN=postgresql://your_data:your_data@your_data:your_data/your_data
+MONGO_USER=your_data
+MONGO_PASSWORD=your_data
 ```
 3. Configure `docker-compose.yaml` if needed.
 4. Run docker-compose:

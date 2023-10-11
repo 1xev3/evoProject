@@ -13,6 +13,12 @@ volumes:
       o: bind
       type: none
       device: ./mongo/data
+  minio-data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./minio/data
 
 services:
   postgresql:
@@ -37,6 +43,18 @@ services:
       MONGO_INITDB_DATABASE: tech-support
       MONGO_USER: ${MONGO_USER}
       MONGO_PASSWORD: ${MONGO_PASSWORD}
+  minio:
+    restart: always
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    command: server --console-address ":9001" /data
+    volumes:
+      - minio-data:/data
 
   ticket-service:
     image: ticket-service:1.0
@@ -44,3 +62,12 @@ services:
     - "5001:5001"
     environment:
       PG_DSN: ${PG_DSN}
+  product-service:
+    image: product-service:1.0
+    ports:
+    - "5010:5010"
+    environment:
+      MONGO_DSN: ${MONGO_DSN}
+      MINIO_DNS: ${MINIO_DNS}
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}

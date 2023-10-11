@@ -3,15 +3,14 @@
 # Settings
 
 ### Setting up (If you not using Docker)
-Set up your MongoDB
+Set up your MongoDB, MinIO
 
 Create `.env` file in current folder with your data:
 ```ini
-MONGO_DSN = "mongodb://USER:PASSWORD@IP:PORT/tech-support"
-```
-or use in console before running
-```bash
-export MONGO_DSN="mongodb://USER:PASSWORD@IP:PORT/tech-support"
+MONGO_DSN = mongodb://USER:PASSWORD@IP:PORT/tech-support
+MINIO_DNS=your_ip:your_port
+MINIO_ACCESS_KEY=your_value
+MINIO_SECRET_KEY=your_value
 ```
 
 ### Settings loading order:
@@ -48,4 +47,11 @@ docker-compose up -d
 Documentation: `http://localhost:5010/docs`
 | Method | Route | Description |
 | --- | --- | --- |
-| `TODO` | `TODO/` | TODO |
+| `get` | `products/` | Get all products |
+| `post` | `product/` | Add new product |
+| `get` | `product/{ProductID}` | Get product by ID |
+| `delete` | `product/{ProductID}` | Delete product by ID |
+| `put` | `product/{ProductID}` | Update product by ID |
+| `get` | `product/{ProductID}/image/{ImageUID}` | Download product image |
+| `post` | `product/{ProductID}/image` | Upload new image to product |
+| `delete` | `product/{ProductID}/image/{ImageUID}` | Delete product image by ID |

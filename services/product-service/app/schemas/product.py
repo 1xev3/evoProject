@@ -16,9 +16,9 @@ class ProductCreate(ProductBase):
 
 class ProductUpdate(ProductBase):
     status: ProductStatusEnum = Field(title="Product status")
-    images: Optional[List[Base64Bytes]] = Field(title="Product images", default=[])
+    # images: Optional[List[Base64Bytes]] = Field(title="Product images", default=[])
 
 class Product(ProductBase):
     unique_id: UUID = Field(title="Unique field from database")
     status: ProductStatusEnum = Field(title="Product status")
-    images: Optional[List[Base64Bytes]] = Field(title="Product images", default=[])
+    images: List[UUID] = Field(title="Product images", default=[])

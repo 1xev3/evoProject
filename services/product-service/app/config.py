@@ -6,7 +6,23 @@ from pydantic import Field, MongoDsn
 
 class Config(BaseSettings):
     mongo_dsn: MongoDsn = Field(
+        title="Mongo connection url",
         examples = ['mongodb://user:pass@localhost:27017/tech-support'],
+    )
+    minio_dns: str = Field(
+        title="Minio connection url",
+        default="localhost:9000",
+        examples=["0.0.0.0:9000"]
+    )
+    minio_access_key: str = Field(
+        title="Minio access key (LOGIN)",
+    )
+    minio_secret_key: str = Field(
+        title="Minio secret key (PASSWORD)",
+    )
+    minio_bucket_name: str = Field (
+        title="Minio bucket to store images",
+        default="product-service"
     )
 
     @classmethod

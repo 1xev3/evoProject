@@ -23,7 +23,7 @@ class Product(Document):
     product_name = StringField(required=True,max_length=60)
     description = StringField()
     status = EnumField(ProductStatusEnum, required=True)
-    images = ListField(BinaryField())
+    images = ListField(UUIDField(binary=False, unique=True))
 
     #nice view
     def __str__(self):

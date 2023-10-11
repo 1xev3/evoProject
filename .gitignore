@@ -9,4 +9,7 @@
 **/deploy/mongo/data/*
 !**/deploy/mongo/data/.gitkeep
 
+**/deploy/minio/data/*
+!**/deploy/minio/data/.gitkeep
+
 **/migrations/versions

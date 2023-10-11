@@ -1,3 +1,3 @@
-from .db import MongoDB
+from .db import MongoDB, MinioClient
 
-__all__ = [MongoDB]
+__all__ = [MongoDB, MinioClient]

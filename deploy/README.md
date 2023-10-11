@@ -15,6 +15,9 @@ POSTGRES_DB=your_data
 PG_DSN=postgresql://your_data:your_data@your_data:your_data/your_data
 MONGO_USER=your_data
 MONGO_PASSWORD=your_data
+MINIO_ROOT_USER=your_data
+MINIO_ROOT_PASSWORD=your_data
+MINIO_DNS=your_ip:your_port
 ```
 3. Configure `docker-compose.yaml` if needed.
 4. Run docker-compose:

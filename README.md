@@ -6,7 +6,7 @@ Project for `EvoAcademy`
 | Service name | Path |
 | --- | --- |
 | User service | [Click](/services/user-service/)
-| Product service | [Click](/services/ticket-service/)
+| Product service | [Click](/services/product-service/)
 | Ticket service | [Click](/services/ticket-service/)
 | Review service | [Click](/services/review-service/)
 | Telegram notify service | [Click](/services/telegram-notify-service/)

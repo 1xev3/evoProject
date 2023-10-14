@@ -48,10 +48,10 @@ Documentation: `http://localhost:5010/docs`
 | Method | Route | Description |
 | --- | --- | --- |
 | `get` | `products/` | Get all products |
-| `post` | `product/` | Add new product |
-| `get` | `product/{ProductID}` | Get product by ID |
-| `delete` | `product/{ProductID}` | Delete product by ID |
-| `put` | `product/{ProductID}` | Update product by ID |
-| `get` | `product/{ProductID}/image/{ImageUID}` | Download product image |
-| `post` | `product/{ProductID}/image` | Upload new image to product |
-| `delete` | `product/{ProductID}/image/{ImageUID}` | Delete product image by ID |
+| `post` | `products/` | Add new product |
+| `get` | `products/{ProductID}` | Get product by ID |
+| `delete` | `products/{ProductID}` | Delete product by ID |
+| `put` | `products/{ProductID}` | Update product by ID |
+| `get` | `products/{ProductID}/images/{ImageUID}` | Download product image |
+| `post` | `products/{ProductID}/images` | Upload new image to product |
+| `delete` | `products/{ProductID}/images/{ImageUID}` | Delete product image by ID |

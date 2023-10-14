@@ -1,5 +1,5 @@
 from mongoengine import Document
-from mongoengine import StringField, EnumField, BinaryField, ListField, UUIDField
+from mongoengine import StringField, EnumField, BinaryField, ListField, UUIDField, ObjectIdField
 from uuid import uuid4
 
 
@@ -19,7 +19,6 @@ class ProductStatusEnum(Enum):
 
 # Определение модели данных
 class Product(Document):
-    unique_id = UUIDField(binary=False, default=uuid4, unique=True)
     product_name = StringField(required=True,max_length=60)
     description = StringField()
     status = EnumField(ProductStatusEnum, required=True)

@@ -3,8 +3,8 @@ from minio import Minio
 from typing import List
 
 class MongoDB():
-    def __init__(self, mongo_dns):
-        connect(host=mongo_dns)
+    def __init__(self, mongo_dsn):
+        connect(host=mongo_dsn)
 
 class MinioClient():
     def __init__(self, endpoint, access_key, secret_key, secure = False):

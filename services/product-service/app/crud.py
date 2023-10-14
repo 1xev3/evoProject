@@ -30,20 +30,20 @@ def add_product(product: ProductCreate) -> db_models.Product:
 
 def db_to_product(product: db_models.Product) -> Product:
     return Product(
-        unique_id=product.unique_id,
+        id=product.id,
         product_name=product.product_name,
         description=product.description,
         status=product.status,
         images=product.images
     )
 
-def get_product_by_uid(uid:UUID) -> Product:
-    product = db_models.Product.objects(unique_id=uid).first()
+def get_product_by_uid(uid:str) -> Product:
+    product = db_models.Product.objects(id=uid).first()
     if product is None: return None
     return db_to_product(product)
 
-def update_product_by_uid(uid:UUID, product_update: ProductUpdate) -> Product:
-    product = db_models.Product.objects(unique_id=uid).first()
+def update_product_by_uid(uid:str, product_update: ProductUpdate) -> Product:
+    product = db_models.Product.objects(id=uid).first()
     if product is None: return None
 
     product.product_name = product_update.product_name
@@ -53,8 +53,8 @@ def update_product_by_uid(uid:UUID, product_update: ProductUpdate) -> Product:
     product.save()
     return db_to_product(product)
 
-def remove_product_by_uid(uid:UUID, minio:MinioClient):
-    product = db_models.Product.objects(unique_id=uid).first()
+def remove_product_by_uid(uid:str, minio:MinioClient):
+    product = db_models.Product.objects(id=uid).first()
     if product is None: return JSONResponse(status_code=404, content={"message": "Product not found"})
 
     minio_client = minio.get_client()
@@ -72,11 +72,11 @@ def remove_product_by_uid(uid:UUID, minio:MinioClient):
     product.delete()
     return JSONResponse(status_code=200, content={"message": "Deleted"})
 
-async def upload_image(uid:UUID, minio:MinioClient, file: UploadFile):
+async def upload_image(uid:str, minio:MinioClient, file: UploadFile):
     if not file.content_type.startswith("image"):
         return JSONResponse(status_code=400, content={"message": "File isnt image"})
 
-    product = db_models.Product.objects(unique_id=uid).first()
+    product = db_models.Product.objects(id=uid).first()
     if product is None: return JSONResponse(status_code=404, content={"message": "Product not found"})
     
     filename = uuid4()
@@ -92,8 +92,8 @@ async def upload_image(uid:UUID, minio:MinioClient, file: UploadFile):
     return JSONResponse(status_code=200, content={"message": "Uploaded", "filename": str(filename)})
 
 
-def download_image(product_uid:UUID, minio:MinioClient, filename:UUID):
-    product = db_models.Product.objects(unique_id=product_uid).first()
+def download_image(product_uid:str, minio:MinioClient, filename:UUID):
+    product = db_models.Product.objects(id=product_uid).first()
     if product is None: return JSONResponse(status_code=404, content={"message": "Product not found"})
 
     minio_client = minio.get_client()
@@ -125,8 +125,8 @@ def download_image(product_uid:UUID, minio:MinioClient, filename:UUID):
     )
 
 
-def remove_image(product_uid:UUID, minio:MinioClient, filename:UUID):
-    product = db_models.Product.objects(unique_id=product_uid).first()
+def remove_image(product_uid:str, minio:MinioClient, filename:UUID):
+    product = db_models.Product.objects(id=product_uid).first()
     if product is None: return JSONResponse(status_code=404, content={"message": "Product not found"})
 
     minio_client = minio.get_client()

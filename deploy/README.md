@@ -9,15 +9,16 @@ docker build -t "SERVICE_NAME:VERSION"
 1. Create `.env` file in current directory.
 2. Fill it with following data:
 ```ini
-POSTGRES_USER=your_data
-POSTGRES_PASSWORD=your_data
-POSTGRES_DB=your_data
-PG_DSN=postgresql://your_data:your_data@your_data:your_data/your_data
-MONGO_USER=your_data
-MONGO_PASSWORD=your_data
-MINIO_ROOT_USER=your_data
-MINIO_ROOT_PASSWORD=your_data
-MINIO_DNS=your_ip:your_port
+POSTGRES_USER=admin
+POSTGRES_PASSWORD=admin_pass
+POSTGRES_DB=tech-support
+PG_DSN=postgresql://admin:admin_pass@localhost:5432/tech-support
+MONGO_USER=admin
+MONGO_PASSWORD=admin_pass
+MONGO_DSN=mongodb://admin:admin_pass@localhost:27017/tech-support
+MINIO_ROOT_USER=admin
+MINIO_ROOT_PASSWORD=admin_pass
+MINIO_DSN=localhost:9000
 ```
 3. Configure `docker-compose.yaml` if needed.
 4. Run docker-compose:

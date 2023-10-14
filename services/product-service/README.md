@@ -8,7 +8,7 @@ Set up your MongoDB, MinIO
 Create `.env` file in current folder with your data:
 ```ini
 MONGO_DSN = mongodb://USER:PASSWORD@IP:PORT/tech-support
-MINIO_DNS=your_ip:your_port
+MINIO_DSN=your_ip:your_port
 MINIO_ACCESS_KEY=your_value
 MINIO_SECRET_KEY=your_value
 ```

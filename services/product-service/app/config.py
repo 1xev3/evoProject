@@ -9,7 +9,7 @@ class Config(BaseSettings):
         title="Mongo connection url",
         examples = ['mongodb://user:pass@localhost:27017/tech-support'],
     )
-    minio_dns: str = Field(
+    minio_dsn: str = Field(
         title="Minio connection url",
         default="localhost:9000",
         examples=["0.0.0.0:9000"]

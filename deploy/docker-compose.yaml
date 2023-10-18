@@ -73,3 +73,13 @@ services:
       MINIO_DSN: ${MINIO_DSN}
       MINIO_ACCESS_KEY: ${MINIO_ROOT_USER}
       MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
+
+  user-service:
+    image: user-service:1.0
+    ports:
+    - "5020:5020"
+    environment:
+      PG_DSN: ${PG_ASYNC_DSN}
+      JWT_SECRET: ${JWT_SECRET}
+      RESET_PASSWORD_TOKEN_SECRET: ${RESET_PASSWORD_TOKEN_SECRET}
+      VERIFICATION_TOKEN_SECRET: ${VERIFICATION_TOKEN_SECRET}

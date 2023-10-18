@@ -13,12 +13,16 @@ POSTGRES_USER=admin
 POSTGRES_PASSWORD=admin_pass
 POSTGRES_DB=tech-support
 PG_DSN=postgresql://admin:admin_pass@localhost:5432/tech-support
+PG_ASYNC_DSN=postgresql+asyncpg://admin:admin_pass@localhost:5432/tech-support
 MONGO_USER=admin
 MONGO_PASSWORD=admin_pass
 MONGO_DSN=mongodb://admin:admin_pass@localhost:27017/tech-support
 MINIO_ROOT_USER=admin
 MINIO_ROOT_PASSWORD=admin_pass
 MINIO_DSN=localhost:9000
+JWT_SECRET=JWT_SECRET
+RESET_PASSWORD_TOKEN_SECRET=RESET_PASSWORD_TOKEN_SECRET
+VERIFICATION_TOKEN_SECRET=VERIFICATION_TOKEN_SECRET
 ```
 3. Configure `docker-compose.yaml` if needed.
 4. Run docker-compose:

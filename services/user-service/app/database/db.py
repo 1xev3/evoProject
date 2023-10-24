@@ -28,10 +28,10 @@ class Database_Initializer():
 
             if not (await connection.run_sync(check_schema)):
                 await connection.execute(CreateSchema(schema))
-                await connection.commit()
 
             #create metadata
             await connection.run_sync(self.base.metadata.create_all)
+            await connection.commit()
     
     @property
     def async_session_maker(self):

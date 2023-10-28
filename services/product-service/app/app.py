@@ -46,7 +46,8 @@ app = FastAPI(
 
 @app.get("/products", 
          summary="Returns all products",
-         response_model=List[Product]
+         response_model=List[Product],
+         tags=["products"]
 )
 async def get_products(skip: int = 0, limit: int = 10):
     return crud.get_products(skip, limit)
@@ -54,7 +55,8 @@ async def get_products(skip: int = 0, limit: int = 10):
 
 @app.post("/products", 
          summary="Add new product",
-         response_model=Product
+         response_model=Product,
+         tags=["products"]
 )
 async def add_product(product: ProductCreate) -> Product:
     return crud.add_product(product)
@@ -62,6 +64,7 @@ async def add_product(product: ProductCreate) -> Product:
 
 @app.get("/products/{product_id}", 
          summary="Get product by id",
+         tags=["products"]
 )
 async def get_product_uid(product_id: str):
     product = crud.get_product_by_uid(product_id)
@@ -72,6 +75,7 @@ async def get_product_uid(product_id: str):
 
 @app.put("/products/{product_id}", 
          summary="Update product info by id",
+         tags=["products"]
 )
 async def update_product(product_id: str, product_update: ProductUpdate):
     product = crud.update_product_by_uid(product_id, product_update)
@@ -82,6 +86,7 @@ async def update_product(product_id: str, product_update: ProductUpdate):
 
 @app.delete("/products/{product_id}", 
          summary="Delete product by id",
+         tags=["products"]
 )
 async def delete_product(product_id: str):
     return crud.remove_product_by_uid(product_id, minio)
@@ -89,6 +94,7 @@ async def delete_product(product_id: str):
 
 @app.get("/products/{product_id}/images/{file_uid}", 
         summary="Download image from product",
+        tags=["products"]
 )
 async def download_image(product_id: str, file_uid: UUID) -> StreamingResponse: #streaming response more stable
     return crud.download_image(product_id, minio, file_uid)
@@ -96,6 +102,7 @@ async def download_image(product_id: str, file_uid: UUID) -> StreamingResponse: 
 
 @app.post("/products/{product_id}/images", 
          summary="Add image to product",
+         tags=["products"]
 )
 async def upload_image(product_id: str, file: UploadFile):
     return await crud.upload_image(product_id, minio, file)
@@ -103,6 +110,7 @@ async def upload_image(product_id: str, file: UploadFile):
 
 @app.delete("/products/{product_id}/images/{file_uid}", 
         summary="Delete image from product",
+        tags=["products"]
 )
 async def remove_image(product_id: str, file_uid: UUID) -> StreamingResponse:
     return crud.remove_image(product_id, minio, file_uid)

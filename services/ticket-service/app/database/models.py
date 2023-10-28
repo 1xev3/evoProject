@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, JSON, Date, Enum
+from sqlalchemy import Column, ForeignKey, Integer, String, Date, Enum, UUID
 from typing import Literal
 from sqlalchemy.orm import relationship
 
@@ -16,7 +16,7 @@ class Ticket(Base):
     __tablename__ = "ticket"
     id = Column(Integer, primary_key=True, index=True)
 
-    creator_id = Column(Integer)
+    creator_id = Column(UUID)
     caption = Column(String)
     status = Column(Enum(TicketStatuses), default=TicketStatuses.awaiting_moderator)
 
@@ -26,7 +26,7 @@ class TicketMessage(Base):
     __tablename__ = "ticket_message"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer)
+    user_id = Column(UUID)
 
     text = Column(String)
     date = Column(Date)

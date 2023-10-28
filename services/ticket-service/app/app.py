@@ -54,7 +54,8 @@ app = FastAPI(
 #Список всех тикетов
 @app.get("/tickets", 
          summary='Возвращает список всех тикетов', 
-         response_model=typing.List[Ticket]
+         response_model=typing.List[Ticket],
+         tags = ["tickets"]
 )
 async def get_tickets_list(db: Session = Depends(get_db), skip: int = 0, limit: int = 100) -> typing.Iterable[Ticket] :
     return functional.get_tickets(db, skip, limit)
@@ -63,7 +64,8 @@ async def get_tickets_list(db: Session = Depends(get_db), skip: int = 0, limit: 
 #Создание нового тикета
 @app.post("/tickets", 
           response_model=Ticket,
-          summary='Создаёт новый тикет'
+          summary='Создаёт новый тикет',
+          tags = ["tickets"]
 )
 async def new_ticket(ticket: TicketCreate, db: Session = Depends(get_db)) -> Ticket :
     return functional.create_ticket(db, ticket)
@@ -71,7 +73,8 @@ async def new_ticket(ticket: TicketCreate, db: Session = Depends(get_db)) -> Tic
 
 #Получить тикет по ID
 @app.get("/tickets/{ticketID}", 
-         summary='Получить тикет по его ID'
+         summary='Получить тикет по его ID',
+         tags = ["tickets"]
 )
 async def get_ticket_info(ticketID: int, db: Session = Depends(get_db)) -> Ticket :
     ticket = functional.get_ticket_by_id(db, ticketID)
@@ -82,7 +85,8 @@ async def get_ticket_info(ticketID: int, db: Session = Depends(get_db)) -> Ticke
 
 #Удаление тикета
 @app.delete("/tickets/{ticketID}", 
-            summary='Удаляет тикет из базы по его ID'
+            summary='Удаляет тикет из базы по его ID',
+            tags = ["tickets"]
 )
 async def delete_ticket(ticketID: int, db: Session = Depends(get_db)) -> Ticket :
     if functional.remove_ticket_by_id(db, ticketID):
@@ -92,7 +96,8 @@ async def delete_ticket(ticketID: int, db: Session = Depends(get_db)) -> Ticket 
 
 #Обновление информации о тикете
 @app.put("/tickets/{ticketID}", 
-         summary='Обновляет тикет по его ID'
+         summary='Обновляет тикет по его ID',
+         tags = ["tickets"]
 )
 async def update_ticket(ticketID: int, ticketbase: TicketUpdate, db: Session = Depends(get_db)) -> Ticket :
     ticket = functional.update_ticket_by_id(db, ticketID, ticketbase)
@@ -103,7 +108,8 @@ async def update_ticket(ticketID: int, ticketbase: TicketUpdate, db: Session = D
 
 #Получение сообщений в тикете
 @app.get("/tickets/{ticketID}/messages", 
-         summary='Получить все сообщения'
+         summary='Получить все сообщения',
+         tags = ["tickets"]
 )
 async def get_ticket_messages(ticketID: int, db: Session = Depends(get_db)) -> typing.Iterable[TicketMessage] :
     ticket = functional.get_ticket_by_id(db, ticketID)
@@ -112,8 +118,9 @@ async def get_ticket_messages(ticketID: int, db: Session = Depends(get_db)) -> t
     return JSONResponse(status_code=404, content={"message": "Ticket not found"})
 
 #Отправка сообщения
-@app.post("/tickets/{ticketID}/message", 
-         summary='Отправить сообщение'
+@app.post("/tickets/{ticketID}/messages", 
+         summary='Отправить сообщение',
+         tags = ["tickets"]
 )
 async def send_ticket_message(ticketID: int, ticket_message: TicketMessageCreate, db: Session = Depends(get_db)) -> TicketMessage:
     ticket = functional.get_ticket_by_id(db, ticketID)
@@ -130,20 +137,10 @@ async def send_ticket_message(ticketID: int, ticket_message: TicketMessageCreate
 ## Методы сообщений ##
 ##==================##
 
-#Получение сообщения по ID
-@app.get("/message/{messageID}", 
-         summary='Получить сообщение по id',
-         response_model=TicketMessage,
-)
-async def get_message_by_id(messageID: int, db: Session = Depends(get_db)) -> TicketMessage :
-    message = functional.get_message_by_id(db, messageID)
-    if message != None:
-        return message
-    return JSONResponse(status_code=404, content={"message": "Message not found"})
-
 #Обновление информации о сообщении
-@app.put("/message/{messageID}", 
-         summary='Обновляет сообщение по его ID'
+@app.put("/tickets/messages/{messageID}", 
+         summary='Обновляет сообщение по его ID',
+         tags = ["tickets"]
 )
 async def update_message(messageID: int, messagebase: TicketMessageBase, db: Session = Depends(get_db))  :
     status = functional.update_message_by_id(db, messageID, messagebase)
@@ -152,8 +149,9 @@ async def update_message(messageID: int, messagebase: TicketMessageBase, db: Ses
     return JSONResponse(status_code=404, content={"message": "Message not found"})
 
 #Удаление сообщения
-@app.delete("/message/{messageID}", 
-            summary='Удаляет тикет из базы по его ID'
+@app.delete("/tickets/messages/{messageID}", 
+            summary='Удаляет тикет из базы по его ID',
+            tags = ["tickets"]
 )
 async def delete_message(messageID: int, db: Session = Depends(get_db)) :
     if functional.remove_message_by_id(db, messageID):

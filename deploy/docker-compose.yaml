@@ -19,6 +19,12 @@ volumes:
       o: bind
       type: none
       device: ./minio/data
+  policy-enforcement-data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./policy-enforcement-data
 
 services:
   postgresql:
@@ -58,16 +64,25 @@ services:
 
 
   ticket-service:
-    image: ticket-service:1.0
+    build:
+      context: ../services/ticket-service
+      dockerfile: ./Dockerfile
     ports:
-    - "5001:5001"
+      - "5001:5001"
+    depends_on:
+      - postgresql
     environment:
       PG_DSN: ${PG_DSN}
       
   product-service:
-    image: product-service:1.0
+    build:
+      context: ../services/product-service
+      dockerfile: ./Dockerfile
     ports:
-    - "5010:5010"
+      - "5010:5010"
+    depends_on:
+      - mongo
+      - minio
     environment:
       MONGO_DSN: ${MONGO_DSN}
       MINIO_DSN: ${MINIO_DSN}
@@ -75,11 +90,29 @@ services:
       MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
 
   user-service:
-    image: user-service:1.0
+    build:
+      context: ../services/user-service
+      dockerfile: ./Dockerfile
     ports:
-    - "5020:5020"
+      - "5020:5020"
+    depends_on:
+      - postgresql
     environment:
       PG_DSN: ${PG_ASYNC_DSN}
       JWT_SECRET: ${JWT_SECRET}
       RESET_PASSWORD_TOKEN_SECRET: ${RESET_PASSWORD_TOKEN_SECRET}
       VERIFICATION_TOKEN_SECRET: ${VERIFICATION_TOKEN_SECRET}
+
+  policy-enforcement-service:
+    build:
+      context: ../services/policy-enforcement-service
+      dockerfile: ./Dockerfile
+    ports:
+      - "5100:5100"
+    volumes:
+      - policy-enforcement-data:/mnt/
+    depends_on:
+      - postgresql
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+      POLICIES_CONFIG_PATH: ${POLICIES_CONFIG_PATH}

@@ -53,6 +53,6 @@ Documentation: `http://localhost:5000/docs`
 | `get` | `tickets/{ticketID}` | Get ticket by ID |
 | `delete` | `tickets/{ticketID}` | Delete ticket by ID |
 | `put` | `tickets/{ticketID}` | Update ticket info by ID |
-| `get` | `message/{messageID}` | Get message by ID |
-| `put` | `message/{messageID}` | Update message by ID |
-| `delete` | `message/{messageID}` | Delete message by ID |
+| `get` | `tickets/messages/{messageID}` | Get message by ID |
+| `put` | `tickets/messages/{messageID}` | Update message by ID |
+| `delete` | `tickets/messages/{messageID}` | Delete message by ID |

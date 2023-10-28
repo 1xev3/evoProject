@@ -8,6 +8,7 @@ Set up your PosgreSQL
 Create `.env` file in current folder with your data:
 ```ini
 JWT_SECRET=YOUR_SECRET
+POLICIES_CONFIG_PATH=policies.yaml
 ```
 
 ### Settings loading order:

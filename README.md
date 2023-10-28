@@ -5,6 +5,7 @@ Project for `EvoAcademy`
 # Services
 | Service name | Path |
 | --- | --- |
+| Policy enforcement service | [Click](/services/policy-enforcement-service)
 | User service | [Click](/services/user-service/)
 | Product service | [Click](/services/product-service/)
 | Ticket service | [Click](/services/ticket-service/)

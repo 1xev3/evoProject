@@ -61,6 +61,14 @@ services:
     command: server --console-address ":9001" /data
     volumes:
       - minio-data:/data
+  rabbitmq:
+    image: rabbitmq:3.13.0-rc.1-management-alpine
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+    ports:
+      - "5672:5672"
+      - "15672:15672"
 
 
   ticket-service:
@@ -116,3 +124,14 @@ services:
     environment:
       JWT_SECRET: ${JWT_SECRET}
       POLICIES_CONFIG_PATH: ${POLICIES_CONFIG_PATH}
+
+  telegram-notify-service:
+    build:
+      context: ../services/telegram-notify-service
+      dockerfile: ./Dockerfile
+    depends_on:
+      - rabbitmq
+    environment:
+      RABBITMQ_DSN: ${RABBITMQ_DSN}
+      TELEGRAM_USER_IDS: ${TELEGRAM_USER_IDS}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}

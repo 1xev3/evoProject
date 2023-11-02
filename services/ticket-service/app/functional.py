@@ -6,6 +6,8 @@ from sqlalchemy.orm import Session
 from .database import models as db_models
 from . import schemas
 
+from .broker import MessageBroker
+
 def create_ticket_message(user_id: int, text: str):
     return db_models.TicketMessage(
         text = text,
@@ -22,7 +24,7 @@ def get_tickets(db: Session, skip:int = 0, limit:int = 100) -> typing.Iterable[d
             .limit(limit) \
             .all()
 
-def create_ticket(db: Session, ticket: schemas.TicketCreate) -> db_models.Ticket:
+def create_ticket(db: Session, broker:MessageBroker, ticket: schemas.TicketCreate) -> db_models.Ticket:
     '''
     Создать новый тикет
     '''
@@ -42,6 +44,8 @@ def create_ticket(db: Session, ticket: schemas.TicketCreate) -> db_models.Ticket
     db.add(new_ticket)
     db.commit()
     db.refresh(new_ticket)
+
+    broker.send_message(f"New ticket has created by user {ticket.creator_id}. Caption: {ticket.caption}")
 
     return new_ticket
 

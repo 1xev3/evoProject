@@ -81,6 +81,7 @@ services:
       - postgresql
     environment:
       PG_DSN: ${PG_DSN}
+      RABBITMQ_DSN: ${RABBITMQ_DSN}
       
   product-service:
     build:

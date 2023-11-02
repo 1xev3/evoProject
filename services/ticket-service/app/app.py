@@ -10,12 +10,12 @@ from .database import DB_INITIALIZER
 from .schemas import Ticket, TicketCreate, TicketUpdate
 from .schemas import TicketMessage, TicketMessageCreate, TicketMessageBase
 
-from . import functional, config
+from . import functional, config, broker
 
 ##===============##
 ## Инициализация ##
 ##===============##
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("ticket-service")
 logging.basicConfig(
     level=20,
     format="%(levelname)-9s %(message)s"
@@ -33,6 +33,12 @@ logger.info(
 logger.info('Database initialization...')
 SessionLocal = DB_INITIALIZER.init_db(cfg.pg_dsn.unicode_string())
 logger.info('Database initialized...')
+
+message_broker = broker.MessageBroker(
+    ampq_dsn=cfg.RABBITMQ_DSN.unicode_string(),
+    exchange_name=cfg.EXCHANGE_NAME,
+    queue_name=cfg.QUEUE_NAME,
+)
 
 #Получить доступ к базе данных
 def get_db() -> Session:
@@ -68,7 +74,7 @@ async def get_tickets_list(db: Session = Depends(get_db), skip: int = 0, limit: 
           tags = ["tickets"]
 )
 async def new_ticket(ticket: TicketCreate, db: Session = Depends(get_db)) -> Ticket :
-    return functional.create_ticket(db, ticket)
+    return functional.create_ticket(db, message_broker, ticket)
 
 
 #Получить тикет по ID

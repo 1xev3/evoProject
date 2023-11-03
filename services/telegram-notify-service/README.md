@@ -6,7 +6,7 @@
 Create `.env` file in current folder with your data:
 ```ini
 RABBITMQ_DSN=amqp://admin:admin_pass@localhost:5672//
-TELEGRAM_USER_IDS=["YOUR_TELEGRAM_ID"]
+TELEGRAM_CHAT_IDS=["YOUR_TELEGRAM_ID"]
 TELEGRAM_BOT_TOKEN=YOUR_TELEGRAM_BOT_TOKEN
 ```
 Optional fields:

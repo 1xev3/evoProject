@@ -134,5 +134,5 @@ services:
       - rabbitmq
     environment:
       RABBITMQ_DSN: ${RABBITMQ_DSN}
-      TELEGRAM_USER_IDS: ${TELEGRAM_USER_IDS}
+      TELEGRAM_CHAT_IDS: ${TELEGRAM_CHAT_IDS}
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}

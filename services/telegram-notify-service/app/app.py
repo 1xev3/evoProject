@@ -28,7 +28,7 @@ def process_message(body, message: Message):
     logger.info(f"Recieved message {message} with content: {body}")
 
     try:
-        for tele_id in app_config.TELEGRAM_USER_IDS:
+        for tele_id in app_config.TELEGRAM_CHAT_IDS:
             api.send_message_to_user(tele_id, body)
     finally:
         message.ack() #close message anyway

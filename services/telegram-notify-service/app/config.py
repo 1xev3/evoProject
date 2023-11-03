@@ -7,7 +7,7 @@ class Config(BaseSettings):
 
     RABBITMQ_DSN: AmqpDsn = Field(alias="RABBITMQ_DSN")
     TELEGRAM_BOT_TOKEN: SecretStr = Field(description="Telegram bot token registered through BotFather")
-    TELEGRAM_USER_IDS: List = Field(alias="TELEGRAM_USER_IDS")
+    TELEGRAM_CHAT_IDS: List = Field(alias="TELEGRAM_CHAT_IDS")
     EXCHANGE_NAME: str = Field(default="telegram_notify", description="ampq exchanger name")
     QUEUE_NAME: str = Field(default="simple_queue", description="ampq exchanger queue name")
 

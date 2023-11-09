@@ -136,3 +136,12 @@ services:
       RABBITMQ_DSN: ${RABBITMQ_DSN}
       TELEGRAM_CHAT_IDS: ${TELEGRAM_CHAT_IDS}
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+
+  testing:
+    build:
+      context: ../testing
+      dockerfile: ./Dockerfile
+    depends_on:
+      - policy-enforcement-service
+    environment:
+      PG_DSN: ${PG_DSN}

@@ -20,6 +20,10 @@ QUEUE_NAME=QUEUE_NAME
 2. Environment
 3. Default fields
 
+# Testing
+Fill your .env\
+Run `source run_test.sh` or `python3 -m unittest`
+
 # Running
 ## Standalone:
 ```bash

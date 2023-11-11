@@ -7,15 +7,17 @@ from sqlalchemy.sql import text
 
 from dotenv import load_dotenv
 from os import environ
+from typing import Any
 
 #load .env file
 load_dotenv(".env")
 
-ENTRYPOINT = 'http://172.17.0.1:5100/'
+ENTRYPOINT = 'http://policy-enforcement-service:5100/'
 DATABASE_DSN = environ.get("PG_DSN")
 DATABASE_SCHEMA = "users"
 
 ACCESS_DENIED_MESSAGE = {'message': 'Content not found'}
+TICKET_DELETED_MESSAGE = { "message": "Ticket successfully deleted" }
 ADMIN_GROUP_ID = 1
 USER_GROUP_ID = 2
 
@@ -35,6 +37,13 @@ class User(pydantic.BaseModel):
     nickname: str
     bio: str
     group_id: int
+
+class Ticket(pydantic.BaseModel):
+    creator_id: str
+    caption: str
+    status: int
+    id: int
+    messages: list[Any]
 
 class TestCommonFunctionality(unittest.TestCase):
     def setUp(self) -> None:
@@ -140,6 +149,24 @@ class TestAdminPolicies(BaseUserTestCase):
         data = response.json()
         self.assertIsInstance(data, list)
 
+    def test_create_delete_ticket(self):
+        self._raise_if_invalid_user()
+        
+        payload = {
+            "creator_id": self.test_user.id,
+            "caption": "test_caption",
+            "initial_message": "test message"
+        }
+
+        response = requests.post(f'{ENTRYPOINT}tickets', json=payload, headers=self.auth_headers)
+        self.assertEqual(response.status_code, 200)
+
+        #delete only for admin
+        ticket = Ticket(**response.json())
+        response = requests.delete(f'{ENTRYPOINT}tickets/{ticket.id}', json=payload, headers=self.auth_headers)
+        self.assertEqual(response.status_code, 200)
+        self.assertDictEqual(response.json(), TICKET_DELETED_MESSAGE)
+
 class TestUserPolicies(BaseUserTestCase):
     def setUp(self) -> None:
         super().setUp(USER_GROUP_ID)
@@ -165,6 +192,16 @@ class TestUserPolicies(BaseUserTestCase):
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertIsInstance(data, list)
+
+    def test_get_tickets_list(self):
+        self._raise_if_invalid_user()
+        response = requests.get(
+            f'{ENTRYPOINT}tickets', headers=self.auth_headers
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertIsInstance(data, list)
+
 
 if __name__ == '__main__':
     unittest.main()

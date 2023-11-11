@@ -36,20 +36,20 @@ class TelegramAPI():
 
         return schemas.BasicReponse(**response.json())
     
-    def __get(self, path:str, query:dict = None):
+    def get(self, path:str, query:dict = None):
         return self.__make_request(HTTP_METHODS.GET, path, query)
     
-    def __post(self, path:str, query:dict = None, payload: dict = None):
+    def post(self, path:str, query:dict = None, payload: dict = None):
         return self.__make_request(HTTP_METHODS.POST, path, query, payload)
     
     def getMe(self) -> schemas.User:
-        resp = self.__get("getMe")
+        resp = self.get("getMe")
         return schemas.User(**resp.result)
 
     #https://core.telegram.org/method/messages.sendMessage
     def send_message_to_user(self, user_id, message) -> schemas.Message:
         payload = {"chat_id": user_id,"text": message}
-        resp = self.__post("sendMessage", payload=payload).result
+        resp = self.post("sendMessage", payload=payload).result
 
         msg = schemas.Message(
             message_id=resp["message_id"],

@@ -1,4 +1,4 @@
-import typing, logging
+import typing, logging, json
 
 from fastapi import FastAPI, Depends
 from fastapi.responses import JSONResponse
@@ -111,3 +111,13 @@ async def on_startup():
         cfg.PG_DSN.unicode_string()
     )
 
+    groups = []
+    with open(cfg.default_groups_config_path) as f:
+        groups = json.load(f)
+
+    logger.info(f"Loaded default groups: {groups}")
+    async for session in database.get_async_session():
+        for group in groups:
+            await users.crud.upsert_group(
+                session, users.schemas.GroupUpsert(**group)
+            )

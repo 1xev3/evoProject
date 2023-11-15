@@ -1,9 +1,9 @@
 
 #used to store tokens
 class UserSecretConfig():
-    reset_password_token_secret = 'reset_password_token_secret'
-    verification_token_secret = 'verification_token_secret'
-    jwt_secret = 'jwt_secret'   
+    reset_password_token_secret: str = None
+    verification_token_secret: str = None
+    jwt_secret: str = None
 
 user_secrets: UserSecretConfig = UserSecretConfig()
 

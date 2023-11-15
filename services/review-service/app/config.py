@@ -3,29 +3,16 @@ from pydantic_settings import BaseSettings, PydanticBaseSettingsSource
 
 from typing import Tuple, Type
 
-from pydantic import Field, PostgresDsn, SecretStr, FilePath
+from pydantic import Field, PostgresDsn, AmqpDsn
 
 class Config(BaseSettings):
-    PG_DSN: PostgresDsn = Field(
+    pg_dsn: PostgresDsn = Field(
         default = 'postgres://user:pass@localhost:5432/foobar',
     )
-
-    jwt_secret: SecretStr = Field(
-        alias='JWT_SECRET'
-    )
-
-    reset_password_token_secret: SecretStr = Field(
-        alias='RESET_PASSWORD_TOKEN_SECRET'
-    )
-
-    verification_token_secret: SecretStr = Field(
-        alias='VERIFICATION_TOKEN_SECRET'
-    )
-
-    default_groups_config_path: FilePath = Field(
-        default='default-groups.json',
-        alias='DEFAULT_GROUPS_CONFIG_PATH'
-    )
+    
+    RABBITMQ_DSN: AmqpDsn = Field(description="Ampq dsn for RabbitMQ")
+    EXCHANGE_NAME: str = Field(default="telegram_notify", description="ampq exchanger name")
+    QUEUE_NAME: str = Field(default="simple_queue", description="ampq exchanger queue name")
 
     @classmethod
     def settings_customise_sources(

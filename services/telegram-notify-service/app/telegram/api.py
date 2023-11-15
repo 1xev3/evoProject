@@ -20,12 +20,13 @@ class TelegramAPI():
 
         logger.info(f"Making request to {path} with query: {query}, payload:{payload}")
         if method == HTTP_METHODS.GET:
-            response = requests.get(url)
+            response = requests.get(url, timeout = (3, 5))
         elif method == HTTP_METHODS.POST:
             response = requests.post(
                 url, 
                 json=payload, 
-                headers={'Content-Type': 'application/json'}
+                headers={'Content-Type': 'application/json'},
+                timeout=(3, 5)
             )
         else:
             raise ValueError("Unsupported HTTP method")

@@ -29,6 +29,7 @@ RABBITMQ_DEFAULT_PASS=admin_pass
 RABBITMQ_DSN=amqp://admin:admin_pass@localhost:5672//
 TELEGRAM_CHAT_IDS=["YOUR_TELEGRAM_ID"]
 TELEGRAM_BOT_TOKEN=YOUR_TELEGRAM_TOKEN
+DEFAULT_GROUPS_CONFIG_PATH=/mnt/default-groups.json
 ```
 3. Configure `docker-compose.yaml` if needed.
 4. Run docker-compose:

@@ -17,6 +17,9 @@ services:
     - name: ticket-service
       entrypoint: http://ticket-service:5001/
       inject_token_in_swagger: True
+    - name: review-service
+      entrypoint: http://review-service:5030/
+      inject_token_in_swagger: True
     - name: user-service
       entrypoint: http://user-service:5020/
       inject_token_in_swagger: True
@@ -58,3 +61,9 @@ policies:
       resource: /users/*
       methods: (GET)|(POST)|(PUT)|(DELETE)
       rule: r.sub.group_id > 0
+
+    #REVIEW SERVICE
+    - service: review-service
+      rule: r.sub.group_id > 0
+      resource: /reviews*
+      methods: (GET)|(POST)|(PUT)|(DELETE)

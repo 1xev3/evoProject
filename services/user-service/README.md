@@ -6,6 +6,7 @@ PG_DSN=postgresql+asyncpg://admin:admin_pass@localhost:5432/mydb
 JWT_SECRET=JWT_SECRET
 RESET_PASSWORD_TOKEN_SECRET=RESET_PASSWORD_TOKEN_SECRET
 VERIFICATION_TOKEN_SECRET=VERIFICATION_TOKEN_SECRET
+DEFAULT_GROUPS_CONFIG_PATH=default-groups.json
 ```
 
 ### Settings loading order:

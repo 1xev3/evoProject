@@ -25,10 +25,16 @@ volumes:
       o: bind
       type: none
       device: ./policy-enforcement-data
+  user-service-data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./user-service
 
 services:
   postgresql:
-    image: postgres:12
+    image: postgres:latest
     volumes:
       - postgresql-data:/var/lib/postgresql/data
     environment:
@@ -39,7 +45,7 @@ services:
     ports:
       - 5432:5432
   mongo:
-    image: mongo:7.0
+    image: mongo:latest
     volumes:
       - mongo-data:/data/db
       - ./mongo/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
@@ -106,11 +112,14 @@ services:
       - "5020:5020"
     depends_on:
       - postgresql
+    volumes:
+      - user-service-data:/mnt/
     environment:
       PG_DSN: ${PG_ASYNC_DSN}
       JWT_SECRET: ${JWT_SECRET}
       RESET_PASSWORD_TOKEN_SECRET: ${RESET_PASSWORD_TOKEN_SECRET}
       VERIFICATION_TOKEN_SECRET: ${VERIFICATION_TOKEN_SECRET}
+      DEFAULT_GROUPS_CONFIG_PATH: ${DEFAULT_GROUPS_CONFIG_PATH}
 
   policy-enforcement-service:
     build:
@@ -136,6 +145,16 @@ services:
       RABBITMQ_DSN: ${RABBITMQ_DSN}
       TELEGRAM_CHAT_IDS: ${TELEGRAM_CHAT_IDS}
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+
+  review-service:
+    build:
+      context: ../services/review-service
+      dockerfile: ./Dockerfile
+    depends_on:
+      - postgresql
+    environment:
+      PG_DSN: ${PG_ASYNC_DSN}
+      RABBITMQ_DSN: ${RABBITMQ_DSN}
 
   testing:
     build:

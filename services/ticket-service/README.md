@@ -7,11 +7,8 @@ Set up your PosgreSQL
 
 Create `.env` file in current folder with your data:
 ```ini
-PG_DSN = "postgresql://LOGIN:PASSWORD@IP:PORT/DBNAME"
-```
-or use in console before running
-```bash
-export PG_DSN="postgresql://LOGIN:PASSWORD@IP:PORT/DBNAME"
+PG_DSN=postgresql://admin:admin_pass@localhost:PORT/mydb
+RABBITMQ_DSN=amqp://admin:admin_pass@localhost:5672//
 ```
 
 ### Settings loading order:

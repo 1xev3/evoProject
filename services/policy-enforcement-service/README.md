@@ -104,4 +104,10 @@ policies:
       resource: /users/*
       methods: (GET)|(POST)|(PUT)|(DELETE)
       rule: r.sub.group_id > 0
+
+    #REVIEW SERVICE
+    - service: review-service
+      rule: r.sub.group_id > 0
+      resource: /reviews*
+      methods: (GET)|(POST)|(PUT)|(DELETE)
 ```

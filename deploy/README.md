@@ -42,8 +42,8 @@ TELEGRAM_BOT_TOKEN=PASTE_YOUR_BOTTOKEN
 
 ## NOTE - THIS SHOULD BE CONFIGURED BY YOURSELF!
 ```ini
-TELEGRAM_CHAT_IDS=["PASTE_YOUR_USERID"]
-TELEGRAM_BOT_TOKEN=PASTE_YOUR_BOTTOKEN
+TELEGRAM_CHAT_IDS=["PASTE_YOUR_USERID"] #can be obtained by GetMe bot in telegram
+TELEGRAM_BOT_TOKEN=PASTE_YOUR_BOTTOKEN #can be registered from BotFather bot in telegram
 ```
 
 3. Configure `docker-compose.yaml` if needed.

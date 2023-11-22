@@ -1,6 +1,8 @@
 **/__pycache__/*
 **/venv/*
 **/.env
+!/deploy/.env
+
 .vscode
 
 **/deploy/postgresql/data/*

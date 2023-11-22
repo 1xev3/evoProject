@@ -16,6 +16,9 @@ Project for `EvoAcademy`
 e2e tests - [Click](/testing/) \
 Telegram tests example - [Click](/services/telegram-notify-service/test)
 
+# Running
+See [deploy](/deploy/) folder
+
 # Checking for vulnerabilities
 
 ## Service vulnerabilities

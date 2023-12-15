@@ -49,4 +49,4 @@ Documentation: `http://localhost:5030/docs`
 | `delete` | `reviews/{ReviewID}` | Delete review by ID |
 | `get` | `reviews/{ReviewID}/likes` | Get all likes from review |
 | `post` | `reviews/{ReviewID}/likes` | Upload new like to review |
-| `delete` | `reviews/{ReviewID}/images&user_id` | Delete review like by UserID |
+| `delete` | `reviews/{ReviewID}/likes&like_id` | Delete review like by UserID |
